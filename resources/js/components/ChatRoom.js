@@ -9,7 +9,7 @@ import CustomModal from '../utils/CustomModal';
 import AddRoom from './AddRoom';
 import ChatIcon from '@material-ui/icons/Chat';
 import EditIcon from '@material-ui/icons/Create';
-
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 class ChatRoom extends Component {
 
@@ -36,7 +36,7 @@ class ChatRoom extends Component {
         this.addUserToRoom = this.addUserToRoom.bind(this);
         this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
         this.searchRoom = this.searchRoom.bind(this);
-        
+
     }
 
     componentDidMount() {
@@ -125,7 +125,6 @@ class ChatRoom extends Component {
         this.setState({ selectedRoomId: roomId });
         Axios.get('/chatrooms/' + roomId)
             .then(res => {
-                console.log(res.data);
                 this.setState({ chats: res.data.room.chats, chatRoomUsers: res.data.room.users });
             })
     }
@@ -143,12 +142,13 @@ class ChatRoom extends Component {
             })
     }
 
-    createRoom(room){
+    createRoom(room) {
         var chatRooms = [...this.state.chatRooms, room];
         this.setState({ chatRooms: chatRooms });
+        this.showChatRoomData(room.id);
     }
 
-    editRoom(room){
+    editRoom(room) {
         var chatRooms = [...this.state.chatRooms];
         var index = chatRooms.findIndex(obj => obj.id == room.id);
         chatRooms[index] = room;
@@ -161,7 +161,7 @@ class ChatRoom extends Component {
     }
 
     removeUserFromRoom(user) {
-        var chatRoomUsers = this.state.chatRoomUsers.filter(item=>item.id != user.id);
+        var chatRoomUsers = this.state.chatRoomUsers.filter(item => item.id != user.id);
         this.setState({ chatRoomUsers: chatRoomUsers });
     }
 
@@ -169,15 +169,15 @@ class ChatRoom extends Component {
         this.setState({ open: !this.state.open });
     }
 
-    showChatRoomForm(room){
-        if(room == null) //new room
-            this.setState({chatRoomFormShow:true,title: "Add Room", content: <AddRoom room={room} createRoom={this.createRoom.bind(this)} onClose={() => this.setState({ chatRoomFormShow: false })}/>});
+    showChatRoomForm(room) {
+        if (room == null) //new room
+            this.setState({ chatRoomFormShow: true, title: "Add Room", content: <AddRoom room={room} createRoom={this.createRoom.bind(this)} onClose={() => this.setState({ chatRoomFormShow: false })} /> });
         else
-            this.setState({chatRoomFormShow:true,title: "Edit Room", content: <AddRoom room={room} editRoom={this.editRoom.bind(this)} onClose={() => this.setState({ chatRoomFormShow: false })}/>});
+            this.setState({ chatRoomFormShow: true, title: "Edit Room", content: <AddRoom room={room} editRoom={this.editRoom.bind(this)} onClose={() => this.setState({ chatRoomFormShow: false })} /> });
     }
 
-    searchRoom(e){
-        this.setState({filterRoomText:e.target.value});
+    searchRoom(e) {
+        this.setState({ filterRoomText: e.target.value });
     }
 
     render() {
@@ -189,7 +189,7 @@ class ChatRoom extends Component {
                             <div className="headind_srch">
                                 <div className="recent_heading row">
                                     <h4>Rooms</h4>
-                                    <AddCircleOutlineIcon style={{ color: '#05728f' }} onClick={this.showChatRoomForm.bind(this,null)}/>     
+                                    <AddCircleOutlineIcon style={{ color: '#05728f' }} onClick={this.showChatRoomForm.bind(this, null)} />
                                 </div>
                                 <div className="srch_bar">
                                     <div className="stylish-input-group">
@@ -205,40 +205,42 @@ class ChatRoom extends Component {
                             <div className="inbox_chat">
                                 {
                                     this.state.chatRooms
-                                    .filter(room=>{
-                                        return room.name.toLowerCase().indexOf(this.state.filterRoomText.toLowerCase()) >=0
-                                    })
-                                    .map(room => {
-                                        return (
-                                            <div key={room.id} className={"chat_list " + (room.id == this.state.selectedRoomId ? "active-room" : "")} onClick={() => this.showChatRoomData(room.id)}>
-                                                <div className="chat_people">
-                                                    <div className="chat_img"><ChatIcon style={{color: "#15596b"}}/> </div>
-                                                    <div className="chat_ib">
-                                                        <div className="room-name-wrapper">
-                                                            <h5>{room.name} <EditIcon className="room-edit-icon" onClick={this.showChatRoomForm.bind(this,room)}/> <span className="chat_date">{room.created_at.split('T')[0]}</span></h5>
-                                                            <p>{room.description}</p>
-                                                        </div>    
+                                        .filter(room => {
+                                            return room.name.toLowerCase().indexOf(this.state.filterRoomText.toLowerCase()) >= 0
+                                        })
+                                        .map(room => {
+                                            return (
+                                                <div key={room.id} className={"chat_list " + (room.id == this.state.selectedRoomId ? "active-room" : "")} onClick={() => this.showChatRoomData(room.id)}>
+                                                    <div className="chat_people">
+                                                        <div className="chat_img"><ChatIcon style={{ color: "#15596b" }} /> </div>
+                                                        <div className="chat_ib">
+                                                            <div className="room-name-wrapper">
+                                                                <h5>{room.name} <EditIcon className="room-edit-icon" onClick={this.showChatRoomForm.bind(this, room)} /> <span className="chat_date">{room.created_at.split('T')[0]}</span></h5>
+                                                                <p>{room.description}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    })
+                                            )
+                                        })
                                 }
                             </div>
 
                         </div>
                         <div className="mesgs">
-                            <div className="chat-room-user">
-                                Users:
-                                {
-                                    this.state.chatRoomUsers.map(user => {
-                                        return (
-                                            <span style={{ color: this.state.onlineList.some(item => item.id == user.id) ? "#5dd891" : "#a9a6a6" }} key={user.id}> {user.name} </span>
-                                        )
-                                    })
-                                }
+                            <div className="chat-room-user row">
+                                <div style={{ width: "95%", float: "left", padding: "5px" }}>
+                                    Users:
+                                    {
+                                        this.state.chatRoomUsers.map(user => {
+                                            return (
+                                                <span style={{ color: this.state.onlineList.some(item => item.id == user.id) ? "#5dd891" : "#a9a6a6" }} key={user.id}> {user.name} </span>
+                                            )
+                                        })
+                                    }
+                                </div>
                                 <div>
-                                    <button style={{ position: 'absolute', right: '0' }} onClick={this.openUserlist.bind(this)}>+</button>
+                                    <GroupAddIcon style={{ color: "#05728f" }} onClick={this.openUserlist.bind(this)} />
                                     <UserListItem
                                         open={this.state.open}
                                         chatRoomUsers={this.state.chatRoomUsers}
@@ -251,9 +253,13 @@ class ChatRoom extends Component {
                             <div style={{ padding: "30px 15px 0 25px" }}>
                                 <div className="msg_history">
                                     {
-                                        this.state.chats.map(chat => {
-                                            return <ChatMessage key={chat.id} chat={chat} loggedInUser={this.state.loggedInUser} />
-                                        })
+                                        this.state.chats.length != 0 ? (
+                                            this.state.chats.map(chat => {
+                                                return <ChatMessage key={chat.id} chat={chat} loggedInUser={this.state.loggedInUser} />
+                                            })
+                                        ) : (
+                                                <div className="no-msg-found">No message found</div>
+                                            )
                                     }
                                 </div>
                                 <div className="type_msg">
@@ -265,7 +271,7 @@ class ChatRoom extends Component {
 
                                 <CustomModal
                                     open={this.state.chatRoomFormShow}
-                                    onClose={() => this.setState({chatRoomFormShow: false})}
+                                    onClose={() => this.setState({ chatRoomFormShow: false })}
                                     title={this.state.title}
                                     content={this.state.content}
                                 />

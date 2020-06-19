@@ -59,7 +59,7 @@
                                     @if (auth()->user()->image !=null)
                                         <img class="pro-img" src={{asset('storage/'.auth()->user()->image)}} alt="sunil"> 
                                     @else
-                                        <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> 
+                                        <img class="pro-img" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> 
                                     @endif
                                 </div>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

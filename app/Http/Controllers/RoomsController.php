@@ -123,7 +123,7 @@ class RoomsController extends Controller
      */
     public function show($id)
     {
-        $room = $this->repository->with(['chats.user:id,name','users'])->find($id);
+        $room = $this->repository->with(['chats.user:id,name,image','users'])->find($id);
 
         if (request()->wantsJson()) {
 

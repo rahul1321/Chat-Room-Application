@@ -146,9 +146,11 @@ img{ max-width:100%;}
 .chat-room-user{
     background: #f8f8f8;
     min-height: 50px;
-    padding: 6px;
+    padding: 5px;
     color: #a9a6a6;
     font-weight: 600;
+    width: 100%;
+    margin: 0;
 }
 
 .active-room{
@@ -156,11 +158,10 @@ img{ max-width:100%;}
 }
 
 .user-add-list{
-  width: 250px;
+  width: 300px;
   border: 1px solid #ddd;
   position: absolute;
   right: 0;
-  top: 58px;
   max-height: 325px;
   background: #f8f8f8;
   overflow-y: auto;
@@ -224,7 +225,14 @@ img{ max-width:100%;}
 }
 
 .pro-img{
-    width: 40px;
-    height: 35px;
+    width: 34px;
+    height: 32px;
     border-radius: 100%;
+}
+
+.no-msg-found{
+    color: #05728f;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
 }

@@ -3,6 +3,7 @@
 use App\Entities\Room;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Facades\Utils;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,7 @@ Route::group(['middleware' => 'verified','auth'], function () {
     Route::put('/removeuserfromroom/{roomId}', 'RoomsController@removeUserFromRoom');
 });
 
+Route::get('test', function () {
+    Utils::put('test','test test test');
+    dd(Utils::get('test'));
+});

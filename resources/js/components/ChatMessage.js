@@ -15,7 +15,16 @@ class ChatMessage extends Component {
         else
             return (
                 <div key={chat.id} className="incoming_msg">
-                    <div className="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" /> </div>
+                    <div className="incoming_msg_img"> 
+                    {
+                        chat.user.image == null
+                        ?
+                        <img className="pro-img" src="https://ptetutorials.com/images/user-profile.png" alt="sunil" /> 
+                        :
+                        <img className="pro-img" src={'/storage/'+ chat.user.image} alt="sunil" /> 
+                    }
+                        
+                    </div>
                     <div className="received_msg">
                         <div className="received_withd_msg">
                             <span className="chat-user-name">{chat.user.name}</span>

@@ -83,7 +83,7 @@ class ChatsController extends Controller
                 'message' => $request->message
             ]);
             
-            event(new ChatEvent($request->room_id,$chat->load('user:id,name')));
+            event(new ChatEvent($request->room_id,$chat->load('user:id,name,image')));
 
             $response = [
                 'message' => 'Chat created.',
